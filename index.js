@@ -1,17 +1,20 @@
 const express = require("express");
-const { default: mongoose } = require("mongoose");
 const app = express();
-
+const cors = require("cors");
+require("dotenv").config();
+const { default: mongoose } = require("mongoose");
 const morgan = require("morgan");
 
 const PORT = process.env.PORT || 3000;
+app.use(cors({
+    origin: process.env.ORIGIN
+}));
 
 const UserRouter = require("./routes/UserRouter");
 
 // Middleware
 app.use(morgan('dev'),express.json());
 app.use("/user",UserRouter);
-require("dotenv").config();
 
 const start = async() => {
     await mongoose.connect(
