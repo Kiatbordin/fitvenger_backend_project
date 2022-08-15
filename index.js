@@ -4,8 +4,9 @@ const cors = require("cors");
 require("dotenv").config();
 const { default: mongoose } = require("mongoose");
 const morgan = require("morgan");
+const config = require("./config");
 
-const PORT = process.env.PORT || 3000;
+
 app.use(cors({
     origin: process.env.ORIGIN
 }));
@@ -18,10 +19,10 @@ app.use("/user",UserRouter);
 
 const start = async() => {
     await mongoose.connect(
-        process.env.DB_URI
+        config.mongodb.uri
     );
-    app.listen(PORT,()=>{
-        console.log(`Server is starting on port ${PORT}.`);
+    app.listen(config.port,()=>{
+        console.log(`Server is starting on port ${config.port}.`);
     });
 }
 
