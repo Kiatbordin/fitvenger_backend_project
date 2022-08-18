@@ -12,10 +12,12 @@ app.use(cors({
 }));
 
 const UserRouter = require("./routes/UserRouter");
+const LoginRouter = require("./routes/LoginRouter");
 
 // Middleware
 app.use(morgan('dev'),express.json());
 app.use("/user",UserRouter);
+app.use("/login",LoginRouter);
 
 const start = async() => {
     await mongoose.connect(
