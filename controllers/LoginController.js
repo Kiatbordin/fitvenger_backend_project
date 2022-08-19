@@ -5,7 +5,7 @@ const checkLogin = async(req,res,next) => {
     try {
         /* Get user input */
         const { username,password } = req.body;
-        console.log(`username:${username} and password:${password}`);
+        // console.log(`username:${username} and password:${password}`);
         /* Validate user input */
         if(!(username && password)) {
             res.status(400).send("Username and password are required");
@@ -15,7 +15,7 @@ const checkLogin = async(req,res,next) => {
             {username,password},
             {activities:0,__v: 0}
         )
-        console.log(user);
+        // console.log(user);
         
         if(user) {
             // res.status(200).send(user._id);
