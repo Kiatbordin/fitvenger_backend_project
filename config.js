@@ -5,7 +5,8 @@ const config = {
     mongodb : {
         uri : process.env.DB_URI
     },
-    origin : process.env.ORIGIN
+    origin : process.env.ORIGIN,
+    isVercel: process.env.IS_VERCEL || false,
 }
 
 module.exports = config;
