@@ -14,7 +14,7 @@ const getActivities = async(req,res,next) => {
             if(req.query.from && req.query.to) {
                 const { from, to } = req.query;
                 // console.log(userId);
-                console.log("From: "+ from + " To: " + to);
+                // console.log("From: "+ from + " To: " + to);
                 /*
                     Note : 
                     - The date format in mongoDB has GMT+ which cannot use for testing.
@@ -63,7 +63,7 @@ const getActivities = async(req,res,next) => {
 
         } else {
             /* Return all activites if no query string (from/to) date define. */
-            console.log(req.query);
+            // console.log(req.query);
             const activities = await UsersModel.find(
                 { _id: userId },                    //  Filter
                 {   _id: 0, activities : 1 }        //  Projector
@@ -79,7 +79,7 @@ const getActivities = async(req,res,next) => {
 
 const getActivityById = async(req,res,next)=> {
     const { userId,activityId } = req.params;
-    console.log(`userId:${userId} and activityId:${activityId}`);
+    // console.log(`userId:${userId} and activityId:${activityId}`);
 
     try {
         const activity = await UsersModel.findOne(
@@ -118,7 +118,7 @@ const createActivity = async(req,res,next) => {
                 { $push: { activities: {...req.body} }},
                 { new: true }   //  to returnback the result's object for trouble shooting.
             )
-            console.log(result);
+            // console.log(result);
             return res.send("New activity has been added to userId:"+result._id); // return the new object Id to user.
         } catch (err) {
             return res.status(404).send(err.message);
@@ -128,7 +128,7 @@ const createActivity = async(req,res,next) => {
 
 const editActivity = async(req,res,next) => {
     const { userId,activityId } = req.params;
-    console.log(`userId:${userId} and activityId:${activityId}`);
+    // console.log(`userId:${userId} and activityId:${activityId}`);
 
     try {
         /*  Find existing one first  */
@@ -149,7 +149,7 @@ const editActivity = async(req,res,next) => {
         /*  Merge existing one and new one */
         const existingActivityItem = existingActivity.activities[0];
         const mergeObject = {...existingActivityItem._doc, ...req.body};
-        console.log(mergeObject);
+        // console.log(mergeObject);
         /*  find and updating merged object to database. */
         let result = await UsersModel.findOneAndUpdate(
             { 
@@ -174,7 +174,7 @@ const editActivity = async(req,res,next) => {
                 new: true
             }   //  to returnback the result's object for trouble shooting.
         )
-        console.log(result);
+        // console.log(result);
         return res.status(204).send(`The activityId:${mergeObject._id} has been updated.`); // return the new object Id to user.
     } catch (err) {
         return res.status(404).send("Activity not found.")
@@ -183,7 +183,7 @@ const editActivity = async(req,res,next) => {
 
 const deleteActivity = async(req,res,next) => {
     const { userId,activityId } = req.params;
-    console.log(`userId:${userId} and activityId:${activityId}`);
+    // console.log(`userId:${userId} and activityId:${activityId}`);
     try {
         /* pull(remove) the activity out of the user's array. */
         let result = await UsersModel.findOneAndUpdate(
@@ -191,7 +191,7 @@ const deleteActivity = async(req,res,next) => {
             { $pull: { activities: { _id: activityId } }},
             { new: true },   //  to returnback the result's object for trouble shooting.
         )
-        console.log(result);
+        // console.log(result);
         /* Problem : If no acitivtyId found, findOneAndUpdate's method still working and no err found. */
         return res.send("The activity has been removed from userId:"+result._id); // return the new object Id to user.
 
