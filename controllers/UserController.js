@@ -33,7 +33,7 @@ const createUser = async(req,res,next) => {
     } else {
         try {
             await newUser.save();
-            console.log(newUser);
+            // console.log(newUser);
             return res.send(newUser._id); // return the new object Id to user.
         } catch (err) {
             return res.status(400).send(err.message);
