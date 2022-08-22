@@ -18,7 +18,8 @@ const activitySchema = new Schema({
 const userSchema = new Schema({
     // _id is automatically generate(uuid v4) by mongoDB
     username : { type: String, min: 8, max: 12, required:true, unique: true },
-    password : { type: String, min: 8, max: 16, required:true, select:false },
+    // password : { type: String, min: 8, max: 16, required:true, select:false },
+    password : { type: String, min: 8, required:true },
     name : { type: String, min: 30, max: 50, required:true },
     height : { type: Number, min: 1, required:true },
     weight : { type: Number, min: 1, required:true },

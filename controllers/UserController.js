@@ -1,5 +1,5 @@
 const UsersModel = require("../models/UserModel").usersModel; // import User Schema
-
+const bcrypt = require('bcryptjs');
 const { v4: uuidv4 } = require("uuid");
 
 // admin only
@@ -41,6 +41,28 @@ const createUser = async(req,res,next) => {
     }
 }
 
+const createUser2 = async(req,res,next) => {
+
+    const { password } = req.body;
+    const hashedPassword = await bcrypt.hash(password,12);
+
+    const newUser = new UsersModel({ ...req.body,password: hashedPassword  });
+    // console.log(newUser);
+    let validateResult = newUser.validateSync();
+
+    if(validateResult) {
+        return res.status(400).send(validateResult.message);
+    } else {
+        try {
+            await newUser.save();
+            return res.send(newUser._id); // return the new object Id to user.
+        } catch (err) {
+            return res.status(400).send(err.message);
+        }
+    }
+
+}
+
 const editUser = async(req,res,next) => {
     const { userId } = req.params ;
     try {
@@ -70,6 +92,7 @@ module.exports = {
     getAllUsers,
     getUserById,
     createUser,
+    createUser2,
     editUser,
     deleteUser
 }

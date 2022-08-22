@@ -1,5 +1,7 @@
 const UsersModel = require("../models/UserModel").usersModel; // import User Schema
+const bcrypt = require("bcryptjs");
 
+/* Check username and password using plaintext */
 const checkLogin = async(req,res,next) => {
     // console.log('checkLogin');
     try {
@@ -29,6 +31,38 @@ const checkLogin = async(req,res,next) => {
     }
 };
 
+/* Check username and password using bcrypt */
+const checkLogin2 = async(req,res,next) => {
+    try {
+        /* Get user input */
+        const { username,password } = req.body;
+        /* Validate user input */
+        if(!(username && password)) {
+            res.status(400).send("Username and password are required");
+        }
+        /* Validate if username and password correct in our database */
+        const user = await UsersModel.findOne({username});
+        
+        if(user) {
+            const isMatch = await bcrypt.compare(password,user.password);
+
+            if(isMatch){
+                return res.status(200).send(user);
+            } else {
+                return res.status(400).send("Invalid Credentials");
+            }
+
+        } else {
+            return res.status(400).send("Invalid Credentials");
+        }
+
+    } catch (err) {
+        console.log(err);
+    }
+    
+}
+
 module.exports = {
-    checkLogin
+    checkLogin,
+    checkLogin2
 };
