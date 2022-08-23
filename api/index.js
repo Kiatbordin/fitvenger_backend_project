@@ -26,10 +26,9 @@ if (config.isVercel) {
 }
 
 app.use(cors({
-    // origin: config.origin,
-    origin: "http://127.0.0.1:5173",
+    /* For deproduction */
+    origin: config.origin,
     credentials: true,
-    // allowedHeaders: ["Content-Type", "Authorization"],
 }));
 
 /* This session's middle ware will set session properties to our request object */
@@ -38,10 +37,14 @@ app.use(session({
     resave: false, 
     saveUninitialized: false,
     cookie: {
-        // secure: true,
-        // httpOnly: true,
-        sameSite: "none",
-        // sameSite: true,
+        httpOnly: true,
+
+        /* For production */
+        secure: config.session_secure,
+        sameSite: config.session_samesite,
+
+        /* For developement */
+        // sameSite: "lax",
       },
 }));
 

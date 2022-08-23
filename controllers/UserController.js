@@ -13,19 +13,13 @@ const getAllUsers = async(req,res,next) => {
 }
 
 const getUserById = async(req,res,next) => {
-    // const { userId } = req.params ;
-    // try {
-    //     const user = await UsersModel.findOne({_id: userId },{activities:0});
-    //     return !user ? res.status(404).send("User not found.") : res.send(user);
-    // } catch (err) {
-    //     return res.status(404).send("User not found.");
-    // }
 
     let { userId } = req.params ;
 
+    /* Check if user already had cookie's session */
     if(userId=="me") {
         /* For cookie session */
-        console.log(req.session);
+        // console.log(req.session);
         userId = req.session.user_id;
     } 
         
