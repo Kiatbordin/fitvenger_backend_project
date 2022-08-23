@@ -7,6 +7,7 @@ const config = {
     },
     origin : process.env.ORIGIN,
     isVercel: process.env.IS_VERCEL || false,
+    session_key : process.env.SESSION_KEY,
 }
 
 module.exports = config;

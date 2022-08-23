@@ -1,4 +1,5 @@
 const express = require("express");
+const session = require("express-session");
 const app = express();
 const cors = require("cors");
 require("dotenv").config();
@@ -25,7 +26,23 @@ if (config.isVercel) {
 }
 
 app.use(cors({
-    origin: config.origin
+    // origin: config.origin,
+    origin: "http://127.0.0.1:5173",
+    credentials: true,
+    // allowedHeaders: ["Content-Type", "Authorization"],
+}));
+
+/* This session's middle ware will set session properties to our request object */
+app.use(session({
+    secret: config.session_key,
+    resave: false, 
+    saveUninitialized: false,
+    cookie: {
+        // secure: true,
+        // httpOnly: true,
+        sameSite: "none",
+        // sameSite: true,
+      },
 }));
 
 const UserRouter = require("../routes/UserRouter");

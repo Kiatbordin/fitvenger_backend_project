@@ -13,12 +13,27 @@ const getAllUsers = async(req,res,next) => {
 }
 
 const getUserById = async(req,res,next) => {
-    const { userId } = req.params ;
+    // const { userId } = req.params ;
+    // try {
+    //     const user = await UsersModel.findOne({_id: userId },{activities:0});
+    //     return !user ? res.status(404).send("User not found.") : res.send(user);
+    // } catch (err) {
+    //     return res.status(404).send("User not found.");
+    // }
+
+    let { userId } = req.params ;
+
+    if(userId=="me") {
+        /* For cookie session */
+        console.log(req.session);
+        userId = req.session.user_id;
+    } 
+        
     try {
-        const user = await UsersModel.findOne({_id: userId },{activities:0});
-        return !user ? res.status(404).send("User not found.") : res.send(user);
+      const user = await UsersModel.findOne({ _id: userId }, { activities: 0 });
+      return !user ? res.status(404).send("User not found.") : res.send(user);
     } catch (err) {
-        return res.status(404).send("User not found.");
+      return res.status(404).send("User not found.");
     }
 
 }
