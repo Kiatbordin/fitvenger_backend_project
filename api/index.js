@@ -6,7 +6,7 @@ require("dotenv").config();
 const { default: mongoose } = require("mongoose");
 const morgan = require("morgan");
 const config = require("../config");
-console.log(config);
+// console.log(config);
 /*
 When running on Vercel, Vercel will take express "app" exported from this file.
 We do not have control over port and things that should be run before the app.listen()
