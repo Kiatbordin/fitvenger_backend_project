@@ -1,5 +1,6 @@
 const express = require("express");
 const session = require("express-session");
+const cookieParser = require("cookie-parser");
 const app = express();
 const cors = require("cors");
 require("dotenv").config();
@@ -31,6 +32,7 @@ app.use(cors({
     credentials: true,
 }));
 
+app.use(cookieParser());
 app.set("trust proxy", 1);
 
 /* This session's middle ware will set session properties to our request object */
