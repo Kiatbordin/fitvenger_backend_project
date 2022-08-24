@@ -1,5 +1,6 @@
 const express = require("express");
 const session = require("express-session");
+const MongoStore = require("connect-mongo");
 const cookieParser = require("cookie-parser");
 const app = express();
 const cors = require("cors");
@@ -40,6 +41,9 @@ app.use(session({
     secret: config.session_key,
     resave: false, 
     saveUninitialized: false,
+    store: MongoStore.create({
+        mongoUrl: config.mongodb.uri
+    }),
     cookie: {
         httpOnly: true,
 
