@@ -41,13 +41,12 @@ app.use(session({
     cookie: {
         httpOnly: true,
 
-        // /* For production */
-        // secure: config.session_secure,
-        // sameSite: config.session_samesite,
+        /* For production */
+        secure: config.session_secure,
+        sameSite: config.session_samesite,
 
         /* For developement */
-        sameSite: "none",
-        secure:true
+        // sameSite: "lax",
       },
 }));
 
