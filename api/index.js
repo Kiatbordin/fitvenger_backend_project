@@ -64,4 +64,9 @@ app.use(morgan('dev'),express.json({ limit:'10mb' }));
 app.use("/user",UserRouter);
 app.use("/login",LoginRouter);
 
+app.post("/logout", (req,res,next)=>{
+    req.session.destroy();
+    res.send("Logged out.");
+});
+
 module.exports = app;
