@@ -31,6 +31,8 @@ app.use(cors({
     credentials: true,
 }));
 
+app.set("trust proxy", 1);
+
 /* This session's middle ware will set session properties to our request object */
 app.use(session({
     secret: config.session_key,
@@ -39,12 +41,13 @@ app.use(session({
     cookie: {
         httpOnly: true,
 
-        /* For production */
-        secure: config.session_secure,
-        sameSite: config.session_samesite,
+        // /* For production */
+        // secure: config.session_secure,
+        // sameSite: config.session_samesite,
 
         /* For developement */
-        // sameSite: "lax",
+        sameSite: "none",
+        secure:true
       },
 }));
 
