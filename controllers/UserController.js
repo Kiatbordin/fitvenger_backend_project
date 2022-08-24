@@ -19,7 +19,7 @@ const getUserById = async(req,res,next) => {
     /* Check if user already had cookie's session */
     if(userId=="me") {
         /* For cookie session */
-        // console.log(req.session);
+        console.log(req.session);
         userId = req.session.user_id;
     } 
         
