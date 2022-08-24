@@ -44,10 +44,8 @@ app.use(session({
         httpOnly: true,
 
         /* For production */
-        // secure: config.session_secure,
-        // sameSite: config.session_samesite,
-        secure: true,
-        sameSite: "none",
+        secure: config.session_secure,
+        sameSite: config.session_samesite,
 
         /* For developement */
         // sameSite: "lax",
