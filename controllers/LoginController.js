@@ -47,6 +47,8 @@ const checkLogin2 = async(req,res,next) => {
             const isMatch = await bcrypt.compare(password,user.password);
 
             if(isMatch){
+                req.session.user_id = user._id.toString();
+                // console.log(req.session);
                 return res.status(200).send(user);
             } else {
                 return res.status(400).send("Invalid Credentials");

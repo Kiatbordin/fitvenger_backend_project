@@ -1,11 +1,14 @@
 const express = require("express");
+const session = require("express-session");
+const MongoStore = require("connect-mongo");
+const cookieParser = require("cookie-parser");
 const app = express();
 const cors = require("cors");
 require("dotenv").config();
 const { default: mongoose } = require("mongoose");
 const morgan = require("morgan");
 const config = require("../config");
-
+// console.log(config);
 /*
 When running on Vercel, Vercel will take express "app" exported from this file.
 We do not have control over port and things that should be run before the app.listen()
@@ -25,7 +28,32 @@ if (config.isVercel) {
 }
 
 app.use(cors({
-    origin: config.origin
+    /* For deproduction */
+    origin: config.origin,
+    credentials: true,
+}));
+
+app.use(cookieParser());
+app.set("trust proxy", 1);
+
+/* This session's middle ware will set session properties to our request object */
+app.use(session({
+    secret: config.session_key,
+    resave: false, 
+    saveUninitialized: false,
+    store: MongoStore.create({
+        mongoUrl: config.mongodb.uri
+    }),
+    cookie: {
+        httpOnly: true,
+
+        /* For production */
+        secure: config.session_secure,
+        sameSite: config.session_samesite,
+
+        /* For developement */
+        // sameSite: "lax",
+      },
 }));
 
 const UserRouter = require("../routes/UserRouter");
@@ -35,5 +63,10 @@ const LoginRouter = require("../routes/LoginRouter");
 app.use(morgan('dev'),express.json({ limit:'10mb' }));
 app.use("/user",UserRouter);
 app.use("/login",LoginRouter);
+
+app.post("/logout", (req,res,next)=>{
+    req.session.destroy();
+    res.send("Logged out.");
+});
 
 module.exports = app;
